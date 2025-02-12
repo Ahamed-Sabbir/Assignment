@@ -8,7 +8,7 @@ Here is a **README.md** file based on Postman requests and project functionaliti
 ## **🛠 Setup Instructions**
 ### **1️⃣ Clone the Repository**
 ```bash
-git clone https://github.com/your-username/assignment-awt.git
+git clone https://github.com/Ahamed-Sabbir/Assignment.git
 ```
 
 ### **2️⃣ Configure Database (H2)**
