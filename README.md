@@ -3,6 +3,9 @@ Here is a **README.md** file based on Postman requests and project functionaliti
 ---
 
 ## **Assignment - AWT**
+## **Super Admin
+## **username=sabbir
+## **password=12345
 ---
 
 ## **🛠 Setup Instructions**
