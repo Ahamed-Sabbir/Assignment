@@ -51,6 +51,13 @@ public class AuthController {
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
+            // Update isActive = true
+            Optional<User> loggedInUser = userService.findUserByUsername(user.getUsername());
+            loggedInUser.ifPresent(u -> {
+                u.setActive(true);
+                userService.saveUser(u);
+            });
+
             //create jwt token
             String token = jwtUtil.generateToken(userDetails);
             List<String> myRole = jwtUtil.extractAuthorities(token);
