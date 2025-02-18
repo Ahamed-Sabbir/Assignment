@@ -1,6 +1,6 @@
 package com.sabbir.Controller;
 
-import com.sabbir.model.User;
+import com.sabbir.dto.UserDto;
 import com.sabbir.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +33,7 @@ public class ListController {
     @GetMapping("/list")
     public ResponseEntity<?> getUsers(@AuthenticationPrincipal UserDetails loggedIn, Pageable pageable) {
         Map<String, Object> response = new HashMap<>();
-        Page<User> users = userService.getUsers(userService.findUserByUsername(loggedIn.getUsername()).get(), pageable);
+        Page<UserDto> users = userService.getUsers(userService.findUserByUsername(loggedIn.getUsername()).get(), pageable);
         response.put("users", users);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -48,7 +48,7 @@ public class ListController {
     @GetMapping("/user")
     public ResponseEntity<?> getSearchedUser(@AuthenticationPrincipal UserDetails loggedIn, @RequestParam String username){
         Map<String, Object> response = new HashMap<>();
-        User user = userService.searchInfo(userService.findUserByUsername(loggedIn.getUsername()).get(), username);
+        UserDto user = userService.searchInfo(userService.findUserByUsername(loggedIn.getUsername()).get(), username);
         if(user == null) {
             response.put("message", "user not exist");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -66,7 +66,7 @@ public class ListController {
     @GetMapping("/myInfo")
     public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal UserDetails loggedIn){
         Map<String, Object> response = new HashMap<>();
-        User user = userService.findUserByUsername(loggedIn.getUsername()).get();
+        UserDto user = userService.findUserForInfo(loggedIn.getUsername());
         response.put("user", user);
         return new ResponseEntity<>(response, HttpStatus.FOUND);
     }

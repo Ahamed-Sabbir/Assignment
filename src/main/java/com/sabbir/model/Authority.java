@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,7 +13,6 @@ import java.util.UUID;
 @Table(name = "authority_table")
 public class Authority {
     @Id
-    @GeneratedValue
     @Column(name = "authority_id")
     private UUID id;
 

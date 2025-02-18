@@ -1,5 +1,6 @@
 package com.sabbir.service;
 
+import com.sabbir.dto.UserDto;
 import com.sabbir.model.Authority;
 import com.sabbir.model.User;
 import com.sabbir.repository.AuthorityRepo;
@@ -27,6 +28,24 @@ public class UserService {
         return userRepo.findByUsernameIgnoreCase(username);
     }
 
+    private UserDto convertUserToUserDto(User user) {
+        UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setUsername(user.getUsername());
+        userDto.setActive(user.isActive());
+        if(user.getCreatedBy() != null) userDto.setCreatedBy(user.getCreatedBy().getUsername());
+        else userDto.setCreatedBy(null);
+        userDto.setRole(user.getAuthority().getAuthority());
+        return userDto;
+    }
+
+    public UserDto findUserForInfo(String username){
+        User user = userRepo.findByUsernameIgnoreCase(username).get();
+        return convertUserToUserDto(user);
+    }
+
     public void saveUser(User user) {
         userRepo.save(user);
     }
@@ -47,20 +66,22 @@ public class UserService {
         userRepo.save(user);
     }
 
-    public Page<User> getUsers(User loggedInBy, Pageable pageable){
+    public Page<UserDto> getUsers(User loggedInBy, Pageable pageable){
+        Page<User> users;
         if(loggedInBy.getAuthority().getAuthority().equals("ROLE_SUPREME_ADMIN")){
-            return userRepo.findAll(pageable);
+            users = userRepo.findAll(pageable);
         }
-        return userRepo.findByCreatedBy(loggedInBy, pageable);
+        else users = userRepo.findByCreatedBy(loggedInBy, pageable);
+        return users.map(this::convertUserToUserDto);
     }
 
-    public User searchInfo(User loggedInBy, String username) {
+    public UserDto searchInfo(User loggedInBy, String username) {
         Optional<User> userOptional = userRepo.findByUsernameIgnoreCase(username);
         if(userOptional.isPresent()){
             User user = userOptional.get();
             if(user.getAuthority().getAuthority().equals("ROLE_SUPREME_ADMIN")) return null;
             if(user.getCreatedBy().getId().equals(loggedInBy.getId()) ||
-                    loggedInBy.getAuthority().getAuthority().equals("ROLE_SUPREME_ADMIN")) return user;
+                    loggedInBy.getAuthority().getAuthority().equals("ROLE_SUPREME_ADMIN")) return convertUserToUserDto(user);
         }
         return null;
     }
