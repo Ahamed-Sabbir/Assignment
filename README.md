@@ -1,7 +1,7 @@
 Here is a **README.md** file based on Postman requests and project functionalities.  
 
 ---
-## **Youtube - [https://www.youtube.com/watch?v=6bScI9-TlQs](url) **
+## **Youtube - https://www.youtube.com/watch?v=6bScI9-TlQs **
 ## **Assignment - AWT**
 ## **Super Admin
 ## **username=sabbir
